@@ -1,0 +1,11 @@
+services:
+  dns-server:
+    build: .
+    container_name: bind9_dns
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - ./config:/etc/bind
+      - ./zones:/var/lib/bind
+    restart: always
