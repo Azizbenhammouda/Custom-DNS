@@ -16,7 +16,7 @@ with Diagram(
     "Architecture Technique BIND9", 
     filename="technique_bind9_fixed", 
     show=False, 
-    direction="TB",
+    direction="LR",
     graph_attr=graph_attr  # This is the key fix
 ):
     
