@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DNS Lookup</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f4f4f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container { width: 100%; max-width: 480px; }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.75rem;
+        }
+        .icon {
+            width: 36px; height: 36px;
+            background: #eff6ff;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .header h1 { font-size: 18px; font-weight: 500; color: #111; }
+        .header p { font-size: 13px; color: #888; margin-top: 2px; }
+        .card {
+            background: #fff;
+            border: 1px solid #e4e4e7;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        label { display: block; font-size: 13px; color: #888; margin-bottom: 8px; }
+        .input-row { display: flex; gap: 8px; }
+        input[type="text"] {
+            flex: 1;
+            padding: 0 12px;
+            height: 38px;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #111;
+            background: #fff;
+            outline: none;
+        }
+        input[type="text"]:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px #eff6ff; }
+        button {
+            padding: 0 18px;
+            height: 38px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        button:hover { background: #dbeafe; }
+        .result-box {
+            margin-top: 1.25rem;
+            padding: 0.875rem 1rem;
+            background: #f9fafb;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+        }
+        .result-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #aaa;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .result-value {
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #16a34a;
+        }
+        .result-value.error { color: #dc2626; }
+        .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+        .meta-item {
+            padding: 0.75rem 1rem;
+            background: #f9fafb;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+        }
+        .meta-item .meta-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #aaa;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .meta-item .meta-value {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                <path d="M2 12h20"/>
+            </svg>
+        </div>
+        <div>
+            <h1>DNS Lookup</h1>
+            <p>Resolve domain names on your network</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <form method="POST">
+            <label for="domain">Domain name</label>
+            <div class="input-row">
+                <input type="text" id="domain" name="domain"
+                      placeholder="e.g. myapp.linux.lab"
+                      value="{{ request.form.get('domain', '') }}" />
+                <button type="submit">Resolve</button>
+            </div>
+        </form>
+
+        {% if result %}
+        <div class="result-box">
+            <div class="result-label">Result</div>
+            <div class="result-value {% if result == 'Not found' %}error{% endif %}">
+                {{ result }}
+            </div>
+        </div>
+        <div class="meta">
+            <div class="meta-item">
+                <div class="meta-label">Server</div>
+                <div class="meta-value">bind9_dns</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Status</div>
+                <div class="meta-value" style="color: {% if result == 'Not found' %}#dc2626{% else %}#16a34a{% endif %}">
+                    {% if result == 'Not found' %}not found{% else %}resolved{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

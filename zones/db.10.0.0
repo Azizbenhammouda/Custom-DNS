@@ -1,0 +1,12 @@
+$TTL 604800
+@   IN  SOA ns1.linux.lab. admin.linux.lab. (
+        1
+        604800
+        86400
+        2419200
+        604800 )
+
+@       IN NS ns1.linux.lab.
+
+10      IN PTR server1.linux.lab.
+20      IN PTR myapp.linux.lab.

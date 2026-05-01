@@ -1,12 +1,12 @@
 $TTL    604800
 @       IN      SOA     ns1.linux.lab. admin.linux.lab. (
-                              1         ; Serial
+                              2        ; Serial
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      ns1.linux.lab.
-ns1     IN      A       127.0.0.1
+ns1     IN      A        192.168.239.128
 server1 IN      A       10.0.0.10
 myapp   IN      A       10.0.0.20

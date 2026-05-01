@@ -9,3 +9,10 @@ services:
       - ./config:/etc/bind
       - ./zones:/var/lib/bind
     restart: always
+  web-ui:
+    build: ./web_ui
+    container_name: dns_web_ui
+    ports:
+      - "5000:5000"
+    depends_on:
+      - dns-server

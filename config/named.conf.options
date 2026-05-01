@@ -1,6 +1,7 @@
 options {
     directory "/var/cache/bind";
     allow-query { any; };
+
     forwarders {
         8.8.8.8;
         8.8.4.4;
@@ -8,4 +9,17 @@ options {
 
     dnssec-validation auto;
     listen-on-v6 { any; };
+};
+
+logging {
+    channel dns_log {
+        file "/var/log/named.log" versions 3 size 5m;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    category default { dns_log; };
+    category queries { dns_log; };
 };
