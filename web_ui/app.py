@@ -7,7 +7,6 @@ app = Flask(__name__)
 DNS_SERVER = "bind9_dns"
 
 def dns_lookup(domain):
-  
     try:
         resolver = dns.resolver.Resolver()
         

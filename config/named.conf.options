@@ -12,14 +12,16 @@ options {
 };
 
 logging {
-    channel dns_log {
-        file "/var/log/named.log" versions 3 size 5m;
-        severity info;
+    channel querylog {
+        file "/var/log/named.log";
+        severity dynamic;
         print-time yes;
         print-category yes;
         print-severity yes;
     };
 
-    category default { dns_log; };
-    category queries { dns_log; };
+    category queries { querylog; };
+    category client { querylog; };
+    category resolver { querylog; };
+    category default { querylog; };
 };

@@ -8,6 +8,7 @@ services:
     volumes:
       - ./config:/etc/bind
       - ./zones:/var/lib/bind
+      - ./logs:/var/log
     restart: always
   web-ui:
     build: ./web_ui
@@ -16,3 +17,31 @@ services:
       - "5000:5000"
     depends_on:
       - dns-server
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/config.yml
+      - loki-data:/loki
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail-config.yaml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - loki
+volumes:
+  loki-data:
